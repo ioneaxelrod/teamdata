@@ -25,9 +25,9 @@ app.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
 
-    team_scores = tally_up_team_points_into_dict()
+    scores = tally_up_team_points_into_dict()
 
-    return render_template("index.html", team_scores=team_scores)
+    return render_template("index.html", scores=scores)
 
 
 def tally_up_team_points_into_dict():
