@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from os import environ
 
 db = SQLAlchemy()
 
@@ -8,9 +9,8 @@ def connect_to_db(app):
     :return None
     """
 
-    # Configure to use our PostgreSQL database
-    # TODO: fix
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'TODO: FIX'
+    # Configure to use our MySQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)

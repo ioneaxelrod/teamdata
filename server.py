@@ -38,14 +38,12 @@ def tally_up_team_points_into_dict():
     points = Point.query.all()
 
     for point in points:
-        user_point_counter[point.user] = user_point_counter.get(point.user, 0) + 1
+        user_point_counter[point.user] = user_point_counter.get(point.user, 0) + point.points
 
     for key in user_point_counter:
         team_point_counter[key.team_id] = team_point_counter.get(key.team_id, 0) + user_point_counter.get(key)
 
     return team_point_counter
-
-
 
 
 ########################################################################################################################
@@ -56,7 +54,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///voteinfo'
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
