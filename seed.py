@@ -4,7 +4,7 @@ from os import environ
 
 def create_teams():
     teams = []
-    with open("team_seed.txt") as file:
+    with open("seed_data/team_seed.txt") as file:
         for line in file:
             data = line.rstrip().split(',')
             name, date_created, date_updated = data
@@ -17,7 +17,7 @@ def create_teams():
 
 def create_users():
     users = []
-    with open("user_seed.txt") as file:
+    with open("seed_data/user_seed.txt") as file:
         for line in file:
             data = line.rstrip().split(',')
             name, team_id, date_created, date_updated = data
@@ -30,7 +30,7 @@ def create_users():
 
 def create_points():
     point_array = []
-    with open("points_seed.txt") as file:
+    with open("seed_data/points_seed.txt") as file:
         for line in file:
             data = line.rstrip().split(',')
             user_id, points, reason, date_created = data
