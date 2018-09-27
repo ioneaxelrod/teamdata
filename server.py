@@ -26,8 +26,10 @@ def index():
     """Homepage."""
 
     scores = tally_up_team_points_into_dict()
+    teams = Team.query.all()
+    teams_scores = [(team.name, scores.get(team.id)) for team in teams]
 
-    return render_template("index.html", scores=scores)
+    return render_template("index.html", teams_scores=teams_scores)
 
 
 def tally_up_team_points_into_dict():
@@ -54,7 +56,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ['LOCAL_MYSQL']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)

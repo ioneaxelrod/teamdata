@@ -5,11 +5,11 @@ from os import environ
 def create_teams():
     teams = []
     with open("team_seed.txt") as file:
-    for line in file:
-        data = line.rstrip().split(',')
-        name, date_created, date_updated = data
-        team = Team(name=name, date_created=date_created, date_updated=date_updated)
-        teams.append(team)
+        for line in file:
+            data = line.rstrip().split(',')
+            name, date_created, date_updated = data
+            team = Team(name=name, date_created=date_created, date_updated=date_updated)
+            teams.append(team)
 
     db.session.add_all(teams)
     db.session.commit()
@@ -29,15 +29,15 @@ def create_users():
 
 
 def create_points():
-    points = []
-    with open("user_seed.txt") as file:
+    point_array = []
+    with open("points_seed.txt") as file:
         for line in file:
             data = line.rstrip().split(',')
             user_id, points, reason, date_created = data
             point = Point(user_id=user_id, points=points, reason=reason, date_created=date_created)
-            points.append(point)
+            point_array.append(point)
 
-    db.session.add_all(points)
+    db.session.add_all(point_array)
     db.session.commit()
 
 
@@ -53,16 +53,19 @@ if __name__ == "__main__":
     print("Connected to DB.")
     print("\n\n\n=============================================")
 
+    create_teams()
     teams = Team.query.all()
     [print(team) for team in teams]
 
     print("\n\n\n=============================================")
 
+    create_users()
     users = User.query.all()
     [print(user) for user in users]
 
     print("\n\n\n=============================================")
 
+    create_points()
     points = Point.query.all()
     [print(point) for point in points]
 

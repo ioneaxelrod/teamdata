@@ -5,15 +5,14 @@
 <div class="container">
 
     <ul class="list-group">
-    {% for score in scores %}
+    {% for team_score in teams_scores %}
         <li class="d-flex list-group-item">
             <div class="mr-auto">
-                {{ score }} : {{ scores[score] }}
+                {{ team_score[0] }} : {{ team_score[1] }}
             </div>
         </li>
     {% endfor %}
         </ul>
-    {% endif %}
 </div>
 
 {% endblock %}
