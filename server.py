@@ -6,7 +6,7 @@ from model import db, Point, Team, User
 from sqlalchemy.orm.exc import NoResultFound
 
 
-app = Flask(__name__)
+application = app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = environ['FLASK_SECRET_KEY']
