@@ -7,6 +7,9 @@ from model import db, Point, Team
 
 application = Flask(__name__)
 
+track_modifications = application.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', None)
+
+
 # Required to use Flask sessions and the debug toolbar
 application.secret_key = environ['FLASK_SECRET_KEY']
 
