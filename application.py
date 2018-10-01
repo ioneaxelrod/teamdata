@@ -2,10 +2,11 @@ from flask import Flask, render_template
 from flask_debugtoolbar import DebugToolbarExtension
 from os import environ
 from jinja2 import StrictUndefined
-from model import db, Point, Team, User
+from model import db, Point, Team
 
 
 application = Flask(__name__)
+
 
 # Required to use Flask sessions and the debug toolbar
 application.secret_key = environ['FLASK_SECRET_KEY']
@@ -14,6 +15,8 @@ application.secret_key = environ['FLASK_SECRET_KEY']
 # silently. This is horrible. Fix this so that, instead, it raises an
 # error.
 application.jinja_env.undefined = StrictUndefined
+
+
 
 
 ########################################################################################################################
@@ -27,6 +30,7 @@ def index():
     scores = tally_up_team_points_into_dict()
     teams = Team.query.all()
     teams_scores = [(team.name, scores.get(team.id)) for team in teams]
+    teams_scores = [("blah", "blah")]
 
     return render_template("index.html", teams_scores=teams_scores)
 
@@ -51,12 +55,12 @@ def tally_up_team_points_into_dict():
 # Main Function
 
 
-def connect_to_db(app):
+def connect_to_db(application):
     """Connect the database to our Flask app."""
 
     # Configure to use our MySQL database
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = application
     db.init_app(application)
 
