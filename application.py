@@ -7,9 +7,6 @@ from model import db, Point, Team
 
 application = Flask(__name__)
 
-track_modifications = application.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', None)
-
-
 # Required to use Flask sessions and the debug toolbar
 application.secret_key = environ['FLASK_SECRET_KEY']
 
@@ -56,10 +53,13 @@ def tally_up_team_points_into_dict():
 if __name__ == "__main__":
 
     # Configure to use our MySQL database
-    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     db.app = application
     db.init_app(application)
+    application.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', False)
+    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+
+
     db.create_all()
 
     # We have to set debug=True here, since it has to be True at the
