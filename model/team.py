@@ -3,7 +3,7 @@ from .db import db
 
 class Team(db.Model):
 
-    __tablename__ = 'team'
+    __tablename__ = 'teams'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(45))

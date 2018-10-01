@@ -7,7 +7,6 @@ from model import db, Point, Team
 
 application = Flask(__name__)
 
-
 # Required to use Flask sessions and the debug toolbar
 application.secret_key = environ['FLASK_SECRET_KEY']
 
@@ -15,9 +14,6 @@ application.secret_key = environ['FLASK_SECRET_KEY']
 # silently. This is horrible. Fix this so that, instead, it raises an
 # error.
 application.jinja_env.undefined = StrictUndefined
-
-
-
 
 ########################################################################################################################
 # Page
@@ -30,7 +26,6 @@ def index():
     scores = tally_up_team_points_into_dict()
     teams = Team.query.all()
     teams_scores = [(team.name, scores.get(team.id)) for team in teams]
-    teams_scores = [("blah", "blah")]
 
     return render_template("index.html", teams_scores=teams_scores)
 
@@ -55,26 +50,23 @@ def tally_up_team_points_into_dict():
 # Main Function
 
 
-def connect_to_db(application):
-    """Connect the database to our Flask app."""
+if __name__ == "__main__":
 
     # Configure to use our MySQL database
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
     application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = application
     db.init_app(application)
+    db.create_all()
 
-
-if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
     application.debug = True
+
     # make sure templates, etc. are not cached in debug mode
     application.jinja_env.auto_reload = application.debug
-
-    connect_to_db(application)
 
     # Use the DebugToolbar
     DebugToolbarExtension(application)
 
-    application.run(port=5000, host='0.0.0.0')
+    application.run()

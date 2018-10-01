@@ -4,7 +4,7 @@ from .team import Team
 
 class User(db.Model):
 
-    __tablename__ = 'user'
+    __tablename__ = 'users'
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(45))
@@ -12,4 +12,4 @@ class User(db.Model):
     date_created = db.Column(db.DateTime)
     date_updated = db.Column(db.DateTime)
 
-    team = db.relationship("Team", backref="user")
+    team = db.relationship("Team", backref="users")
