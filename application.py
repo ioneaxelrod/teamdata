@@ -15,6 +15,14 @@ application.secret_key = environ['FLASK_SECRET_KEY']
 # error.
 application.jinja_env.undefined = StrictUndefined
 
+# Configure to use our MySQL database
+db.app = application
+db.init_app(application)
+application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.create_all()
+
 ########################################################################################################################
 # Page
 
@@ -51,16 +59,6 @@ def tally_up_team_points_into_dict():
 
 
 if __name__ == "__main__":
-
-    # Configure to use our MySQL database
-
-    db.app = application
-    db.init_app(application)
-    application.config.setdefault('SQLALCHEMY_TRACK_MODIFICATIONS', False)
-    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-
-
-    db.create_all()
 
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
