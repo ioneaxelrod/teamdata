@@ -11,15 +11,9 @@ application = Flask(__name__)
 application.secret_key = environ['FLASK_SECRET_KEY']
 
 # Normally, if you use an undefined variable in Jinja2, it fails
-# silently. This is horrible. Fix this so that, instead, it raises an
-# error.
+# silently. Strict undefined raises an error.
 application.jinja_env.undefined = StrictUndefined
 
-# Configure to use our MySQL database
-db.app = application
-db.init_app(application)
-application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 ########################################################################################################################
@@ -59,16 +53,26 @@ def tally_up_team_points_into_dict():
 
 if __name__ == "__main__":
 
-    db.create_all()
+    def connect_to_db(app):
+        """Connect the database to our Flask app."""
 
-    # We have to set debug=True here, since it has to be True at the
-    # point that we invoke the DebugToolbarExtension
-    application.debug = True
+        # Configure to use our MySQL database
+        app.config['SQLALCHEMY_DATABASE_URI'] = environ['LOCAL_MYSQL']
+        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+        db.app = app
+        db.init_app(app)
 
-    # make sure templates, etc. are not cached in debug mode
-    application.jinja_env.auto_reload = application.debug
 
-    # Use the DebugToolbar
-    DebugToolbarExtension(application)
+    if __name__ == "__main__":
+        # We have to set debug=True here, since it has to be True at the
+        # point that we invoke the DebugToolbarExtension
+        application.debug = True
+        # make sure templates, etc. are not cached in debug mode
+        application.jinja_env.auto_reload = application.debug
 
-    application.run()
+        connect_to_db(application)
+
+        # Use the DebugToolbar
+        DebugToolbarExtension(application)
+
+        application.run(port=5000, host='0.0.0.0')
