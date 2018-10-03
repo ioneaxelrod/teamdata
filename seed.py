@@ -43,9 +43,13 @@ def create_points():
 if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
-    from application import app
+    from application import application
+    from os import environ
 
-    connect_to_db(app)
+    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = application
+    db.init_app(application)
     db.drop_all()
     db.create_all()
 
