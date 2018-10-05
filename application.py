@@ -25,7 +25,7 @@ def index():
     # teams = Team.query.all()
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
 
-
+    print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
     point = Point.query.first()
     teams_scores = []
     foo = point
