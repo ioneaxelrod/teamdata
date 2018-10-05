@@ -28,6 +28,7 @@ def index():
     # scores = tally_up_team_points_into_dict()
     # teams = Team.query.all()
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
+    point = Point.query.first()
     teams_scores = []
 
     return render_template("index.html", teams_scores=teams_scores)
@@ -59,6 +60,7 @@ def connect_to_db(app):
     # Configure to use our MySQL database
     db.app = app
     db.init_app(app)
+    db.engine.connect()
 
 
 if __name__ == "__main__":
