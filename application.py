@@ -15,7 +15,6 @@ application.secret_key = environ['FLASK_SECRET_KEY']
 application.jinja_env.undefined = StrictUndefined
 
 
-
 ########################################################################################################################
 # Page
 
@@ -51,28 +50,26 @@ def tally_up_team_points_into_dict():
 # Main Function
 
 
+def connect_to_db(app):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our MySQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = app
+    db.init_app(app)
+
+
 if __name__ == "__main__":
+    # We have to set debug=True here, since it has to be True at the
+    # point that we invoke the DebugToolbarExtension
+    application.debug = True
+    # make sure templates, etc. are not cached in debug mode
+    application.jinja_env.auto_reload = application.debug
 
-    def connect_to_db(app):
-        """Connect the database to our Flask app."""
+    connect_to_db(application)
 
-        # Configure to use our MySQL database
-        app.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-        app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-        db.app = app
-        db.init_app(app)
+    # Use the DebugToolbar
+    DebugToolbarExtension(application)
 
-
-    if __name__ == "__main__":
-        # We have to set debug=True here, since it has to be True at the
-        # point that we invoke the DebugToolbarExtension
-        application.debug = True
-        # make sure templates, etc. are not cached in debug mode
-        application.jinja_env.auto_reload = application.debug
-
-        connect_to_db(application)
-
-        # Use the DebugToolbar
-        DebugToolbarExtension(application)
-
-        application.run(port=5000, host='0.0.0.0')
+    application.run(port=5000, host='0.0.0.0')
