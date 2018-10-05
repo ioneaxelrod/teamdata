@@ -25,10 +25,10 @@ application.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
 
-    scores = tally_up_team_points_into_dict()
-    teams = Team.query.all()
-    teams_scores = [(team.name, scores.get(team.id)) for team in teams]
-    # teams_scores = []
+    # scores = tally_up_team_points_into_dict()
+    # teams = Team.query.all()
+    # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
+    teams_scores = []
 
     return render_template("index.html", teams_scores=teams_scores)
 
