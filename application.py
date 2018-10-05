@@ -9,12 +9,6 @@ from flask import Flask
 
 application = Flask(__name__)
 
-application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-# application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# Required to use Flask sessions and the debug toolbar
-application.secret_key = environ['FLASK_SECRET_KEY']
-
 # Normally, if you use an undefined variable in Jinja2, it fails silently. Strict undefined raises an error.
 application.jinja_env.undefined = StrictUndefined
 
@@ -31,7 +25,7 @@ def index():
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
 
 
-    point = Point.query.first()
+   # point = Point.query.first()
     teams_scores = []
 
     return render_template("index.html", teams_scores=teams_scores)
@@ -65,6 +59,14 @@ if __name__ == "__main__":
     application.jinja_env.auto_reload = application.debug
 
     # Configure to use our MySQL database
+
+    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+    # Required to use Flask sessions and the debug toolbar
+    application.secret_key = environ['FLASK_SECRET_KEY']
+
+
 
     application.app_context().push()
     db.app = application

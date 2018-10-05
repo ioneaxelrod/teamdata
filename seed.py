@@ -46,30 +46,30 @@ if __name__ == "__main__":
     from application import application
     from os import environ
 
-    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    db.app = application
-    db.init_app(application)
-    db.drop_all()
-    db.create_all()
-
-    print("Connected to DB.")
-    print("\n\n\n=============================================")
-
-    create_teams()
-    teams = Team.query.all()
-    [print(team) for team in teams]
-
-    print("\n\n\n=============================================")
-
-    create_users()
-    users = User.query.all()
-    [print(user) for user in users]
-
-    print("\n\n\n=============================================")
-
-    create_points()
-    points = Point.query.all()
-    [print(point) for point in points]
-
-    print("\n\n\n=============================================")
+    # application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    # application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    # db.app = application
+    # db.init_app(application)
+    # db.drop_all()
+    # db.create_all()
+    #
+    # print("Connected to DB.")
+    # print("\n\n\n=============================================")
+    #
+    # create_teams()
+    # teams = Team.query.all()
+    # [print(team) for team in teams]
+    #
+    # print("\n\n\n=============================================")
+    #
+    # create_users()
+    # users = User.query.all()
+    # [print(user) for user in users]
+    #
+    # print("\n\n\n=============================================")
+    #
+    # create_points()
+    # points = Point.query.all()
+    # [print(point) for point in points]
+    #
+    # print("\n\n\n=============================================")
