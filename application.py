@@ -49,10 +49,10 @@ application.jinja_env.undefined = StrictUndefined
 @application.route('/')
 def index():
     """Homepage."""
-    #
-    # scores = tally_up_team_points_into_dict()
-    # teams = Team.query.all()
-    # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
+
+    scores = tally_up_team_points_into_dict()
+    teams = Team.query.all()
+    teams_scores = [(team.name, scores.get(team.id)) for team in teams]
     print("printing out dict")
     print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
     print("printing out dict done")
