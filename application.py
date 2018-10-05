@@ -20,14 +20,14 @@ application.jinja_env.undefined = StrictUndefined
 @application.route('/')
 def index():
     """Homepage."""
+    #
+    # scores = tally_up_team_points_into_dict()
+    # teams = Team.query.all()
+    # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
 
-    scores = tally_up_team_points_into_dict()
-    teams = Team.query.all()
-    teams_scores = [(team.name, scores.get(team.id)) for team in teams]
 
-
-   # point = Point.query.first()
-   #  teams_scores = []
+  #  point = Point.query.first()
+    teams_scores = []
 
     return render_template("index.html", teams_scores=teams_scores)
 
@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # Configure to use our MySQL database
 
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+#    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
     # Required to use Flask sessions and the debug toolbar
     application.secret_key = environ['FLASK_SECRET_KEY']
