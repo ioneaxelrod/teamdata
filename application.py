@@ -8,20 +8,33 @@ from jinja2 import StrictUndefined
 from flask import Flask
 
 
-def create_app():
-    temp = Flask(__name__)
-    temp.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    temp.secret_key = environ['FLASK_SECRET_KEY']
-    temp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    return temp
+#
+# def create_app():
+#     temp = Flask(__name__)
+#     temp.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+#     temp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+#     temp.secret_key = environ['FLASK_SECRET_KEY']
+#
+#     return temp
+#
+
+def init_db():
+    db.app = application
+    db.init_app(application)
+
+    if not db.engine:
+        print("no engine")
+
+    db.engine.connect()
+    print("connection XYZ FARTBARF")
 
 
-application = create_app()
-
-
+application = Flask(__name__)
+init_db()
 
 # Normally, if you use an undefined variable in Jinja2, it fails silently. Strict undefined raises an error.
 application.jinja_env.undefined = StrictUndefined
+
 
 ########################################################################################################################
 # Page
@@ -36,11 +49,10 @@ def index():
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
     print("printing out dict")
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.secret_key = environ['FLASK_SECRET_KEY']
     application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    application.secret_key = environ['FLASK_SECRET_KEY']
     print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
     print("printing out dict done")
-
 
     point = Point.query.first()
     print("point: " + str(point))
@@ -51,7 +63,6 @@ def index():
 
 
 def tally_up_team_points_into_dict():
-
     user_point_counter = {}
     team_point_counter = {}
 
@@ -70,6 +81,8 @@ def tally_up_team_points_into_dict():
 # Main Function
 
 if __name__ == "__main__":
+    print("Main getting called")
+
 
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
@@ -85,19 +98,15 @@ if __name__ == "__main__":
     # Required to use Flask sessions and the debug toolbar
     application.secret_key = environ['FLASK_SECRET_KEY']
 
-
-
-   # application.app_context().push()
+    # application.app_context().push()
     db.app = application
     db.init_app(application)
-
 
     if not db.engine:
         print("no engine")
 
     db.engine.connect()
     print("connection XYZ FARTBARF")
-
 
     # Use the DebugToolbar
     DebugToolbarExtension(application)
