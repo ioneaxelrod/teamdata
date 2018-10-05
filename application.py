@@ -6,6 +6,8 @@ from model import db, Point, Team
 
 
 application = Flask(__name__)
+application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Required to use Flask sessions and the debug toolbar
 application.secret_key = environ['FLASK_SECRET_KEY']
@@ -26,6 +28,7 @@ def index():
     scores = tally_up_team_points_into_dict()
     teams = Team.query.all()
     teams_scores = [(team.name, scores.get(team.id)) for team in teams]
+    # teams_scores = []
 
     return render_template("index.html", teams_scores=teams_scores)
 
@@ -54,8 +57,6 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our MySQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
 
