@@ -7,7 +7,17 @@ from jinja2 import StrictUndefined
 
 from flask import Flask
 
-application = Flask(__name__)
+
+def create_app():
+    temp = Flask(__name__)
+    temp.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    temp.secret_key = environ['FLASK_SECRET_KEY']
+    temp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    return temp
+
+
+application = create_app()
+
 
 
 # Normally, if you use an undefined variable in Jinja2, it fails silently. Strict undefined raises an error.
@@ -25,12 +35,16 @@ def index():
     # teams = Team.query.all()
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
     print("printing out dict")
+    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    application.secret_key = environ['FLASK_SECRET_KEY']
     application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
     print("printing out dict done")
 
 
     point = Point.query.first()
+    print("point: " + str(point))
+
     teams_scores = []
     foo = point
     return render_template("index.html", teams_scores=teams_scores)
