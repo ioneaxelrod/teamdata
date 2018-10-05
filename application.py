@@ -10,7 +10,7 @@ from flask import Flask
 application = Flask(__name__)
 
 application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Required to use Flask sessions and the debug toolbar
 application.secret_key = environ['FLASK_SECRET_KEY']
@@ -65,9 +65,10 @@ if __name__ == "__main__":
     application.jinja_env.auto_reload = application.debug
 
     # Configure to use our MySQL database
-    db.init_app(application)
+
     application.app_context().push()
-  #  db.app = application
+    db.app = application
+    db.init_app(application)
 
 
     if not db.engine:
