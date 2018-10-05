@@ -62,8 +62,6 @@ def index():
     print("point: " + str(point))
     print("printing out Point done")
 
-    teams_scores = []
-    foo = point
     return render_template("index.html", teams_scores=teams_scores)
 
 
