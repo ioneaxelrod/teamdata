@@ -62,7 +62,7 @@ if __name__ == "__main__":
     # Configure to use our MySQL database
 
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-#    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
     # Required to use Flask sessions and the debug toolbar
     application.secret_key = environ['FLASK_SECRET_KEY']
