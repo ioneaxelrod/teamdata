@@ -19,6 +19,12 @@ from flask import Flask
 #
 
 def init_db():
+    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+    # Required to use Flask sessions and the debug toolbar
+    application.secret_key = environ['FLASK_SECRET_KEY']
+
     db.app = application
     db.init_app(application)
 
@@ -48,14 +54,13 @@ def index():
     # teams = Team.query.all()
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
     print("printing out dict")
-    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    application.secret_key = environ['FLASK_SECRET_KEY']
     print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
     print("printing out dict done")
 
+    print("printing out Point")
     point = Point.query.first()
     print("point: " + str(point))
+    print("printing out Point done")
 
     teams_scores = []
     foo = point
