@@ -1,11 +1,22 @@
-from flask import Flask, render_template
+from flask import render_template
 from flask_debugtoolbar import DebugToolbarExtension
-from os import environ
-from jinja2 import StrictUndefined
 from model import db, Point, Team
 
+from os import environ
+from jinja2 import StrictUndefined
 
+from flask import Flask
 
+application = Flask(__name__)
+
+application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Required to use Flask sessions and the debug toolbar
+application.secret_key = environ['FLASK_SECRET_KEY']
+
+# Normally, if you use an undefined variable in Jinja2, it fails silently. Strict undefined raises an error.
+application.jinja_env.undefined = StrictUndefined
 
 ########################################################################################################################
 # Page
@@ -18,6 +29,8 @@ def index():
     # scores = tally_up_team_points_into_dict()
     # teams = Team.query.all()
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
+
+
     point = Point.query.first()
     teams_scores = []
 
@@ -43,29 +56,7 @@ def tally_up_team_points_into_dict():
 ########################################################################################################################
 # Main Function
 
-
-def connect_to_db(app):
-    """Connect the database to our Flask app."""
-
-    # # Configure to use our MySQL database
-    # db.app = app
-    # db.init_app(app)
-    # db.engine.connect()
-    pass
-
-
 if __name__ == "__main__":
-
-    application = Flask(__name__)
-    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-    # Required to use Flask sessions and the debug toolbar
-    application.secret_key = environ['FLASK_SECRET_KEY']
-
-    # Normally, if you use an undefined variable in Jinja2, it fails
-    # silently. Strict undefined raises an error.
-    application.jinja_env.undefined = StrictUndefined
 
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
@@ -73,11 +64,18 @@ if __name__ == "__main__":
     # make sure templates, etc. are not cached in debug mode
     application.jinja_env.auto_reload = application.debug
 
-    # connect_to_db(application)
-    db.app = application
+    # Configure to use our MySQL database
     db.init_app(application)
+    application.app_context().push()
+  #  db.app = application
+
+
+    if not db.engine:
+        print("no engine")
+
     db.engine.connect()
-    
+    print("connection XYZ FARTBARF")
+
 
     # Use the DebugToolbar
     DebugToolbarExtension(application)
