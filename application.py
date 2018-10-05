@@ -26,9 +26,9 @@ def index():
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
 
 
-  #  point = Point.query.first()
+    point = Point.query.first()
     teams_scores = []
-
+    foo = point
     return render_template("index.html", teams_scores=teams_scores)
 
 
