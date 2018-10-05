@@ -10,13 +10,6 @@ from flask import Flask
 application = Flask(__name__)
 
 
-application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-
-# Required to use Flask sessions and the debug toolbar
-application.secret_key = environ['FLASK_SECRET_KEY']
-
-
 # Normally, if you use an undefined variable in Jinja2, it fails silently. Strict undefined raises an error.
 application.jinja_env.undefined = StrictUndefined
 
@@ -66,13 +59,13 @@ if __name__ == "__main__":
     # make sure templates, etc. are not cached in debug mode
     application.jinja_env.auto_reload = application.debug
 
-    # # Configure to use our MySQL database
-    #
-    # application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    # application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-    #
-    # # Required to use Flask sessions and the debug toolbar
-    # application.secret_key = environ['FLASK_SECRET_KEY']
+    # Configure to use our MySQL database
+
+    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+    # Required to use Flask sessions and the debug toolbar
+    application.secret_key = environ['FLASK_SECRET_KEY']
 
 
 
