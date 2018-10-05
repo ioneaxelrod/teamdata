@@ -24,8 +24,12 @@ def index():
     # scores = tally_up_team_points_into_dict()
     # teams = Team.query.all()
     # teams_scores = [(team.name, scores.get(team.id)) for team in teams]
-
+    print("printing out dict")
+    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
+    print("printing out dict done")
+
+
     point = Point.query.first()
     teams_scores = []
     foo = point
