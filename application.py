@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
 
 
-    application.app_context().push()
+   # application.app_context().push()
     db.app = application
     db.init_app(application)
 
