@@ -1,5 +1,4 @@
 from flask import render_template
-from flask_debugtoolbar import DebugToolbarExtension
 from model import db, Point, Team
 
 from os import environ
@@ -9,12 +8,14 @@ from flask import Flask
 
 
 def init_db():
+    # set application configuration variables
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
     application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
-    # Required to use Flask sessions and the debug toolbar
+    # required to use Flask sessions and the debug toolbar
     application.secret_key = environ['FLASK_SECRET_KEY']
 
+    # assign database to Flask applications
     db.app = application
     db.init_app(application)
 
@@ -34,30 +35,31 @@ application.jinja_env.undefined = StrictUndefined
 def index():
     """Homepage."""
 
+    # get points associated with team
     scores = tally_up_team_points_into_dict()
+    # get all teams
     teams = Team.query.all()
+    # create a list of tuples to hold name and score data to display in rendered template
     teams_scores = [(team.name, scores.get(team.id)) for team in teams]
-    print("printing out dict")
-    print(application.config['SQLALCHEMY_TRACK_MODIFICATIONS'])
-    print("printing out dict done")
-
-    print("printing out Point")
-    point = Point.query.first()
-    print("point: " + str(point))
-    print("printing out Point done")
 
     return render_template("index.html", teams_scores=teams_scores)
 
 
 def tally_up_team_points_into_dict():
+    """Retrieves points from players and tallies them up into points by team"""
+
+    # set dictionary to hold point values per user and team respectively
     user_point_counter = {}
     team_point_counter = {}
 
+    # retrieve all points
     points = Point.query.all()
 
+    # finds total points for a player and assigns them
     for point in points:
         user_point_counter[point.user] = user_point_counter.get(point.user, 0) + point.points
 
+    # finds total points for a team from players and assigns them
     for key in user_point_counter:
         team_point_counter[key.team_id] = team_point_counter.get(key.team_id, 0) + user_point_counter.get(key)
 
