@@ -8,16 +8,6 @@ from jinja2 import StrictUndefined
 from flask import Flask
 
 
-#
-# def create_app():
-#     temp = Flask(__name__)
-#     temp.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-#     temp.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-#     temp.secret_key = environ['FLASK_SECRET_KEY']
-#
-#     return temp
-#
-
 def init_db():
     application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
     application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -28,13 +18,7 @@ def init_db():
     db.app = application
     db.init_app(application)
 
-    if not db.engine:
-        print("no engine")
-
-    db.engine.connect()
-    print("connection XYZ FARTBARF")
-
-
+# Instantiate Flask Application and Database
 application = Flask(__name__)
 init_db()
 
@@ -79,39 +63,3 @@ def tally_up_team_points_into_dict():
 
     return team_point_counter
 
-
-########################################################################################################################
-# Main Function
-
-if __name__ == "__main__":
-    print("Main getting called")
-
-
-    # We have to set debug=True here, since it has to be True at the
-    # point that we invoke the DebugToolbarExtension
-    application.debug = True
-    # make sure templates, etc. are not cached in debug mode
-    application.jinja_env.auto_reload = application.debug
-
-    # Configure to use our MySQL database
-
-    application.config['SQLALCHEMY_DATABASE_URI'] = environ['SQLALCHEMY_DATABASE_URI']
-    application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-
-    # Required to use Flask sessions and the debug toolbar
-    application.secret_key = environ['FLASK_SECRET_KEY']
-
-    # application.app_context().push()
-    db.app = application
-    db.init_app(application)
-
-    if not db.engine:
-        print("no engine")
-
-    db.engine.connect()
-    print("connection XYZ FARTBARF")
-
-    # Use the DebugToolbar
-    DebugToolbarExtension(application)
-
-    application.run(port=5000, host='0.0.0.0')
