@@ -15,7 +15,7 @@ def init_db():
     # required to use Flask sessions and the debug toolbar
     application.secret_key = environ['FLASK_SECRET_KEY']
 
-    # assign database to Flask applications
+    # assign database to Flask application
     db.app = application
     db.init_app(application)
 
