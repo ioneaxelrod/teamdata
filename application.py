@@ -19,6 +19,7 @@ def init_db():
     db.app = application
     db.init_app(application)
 
+
 # Instantiate Flask Application and Database
 application = Flask(__name__)
 init_db()
@@ -55,11 +56,11 @@ def tally_up_team_points_into_dict():
     # retrieve all points
     points = Point.query.all()
 
-    # finds total points for a player and assigns them
+    # finds total points for a player and assigns points to user_point_counter
     for point in points:
         user_point_counter[point.user] = user_point_counter.get(point.user, 0) + point.points
 
-    # finds total points for a team from players and assigns them
+    # finds total points for a team from players and assigns points to team_point_counter
     for key in user_point_counter:
         team_point_counter[key.team_id] = team_point_counter.get(key.team_id, 0) + user_point_counter.get(key)
 
